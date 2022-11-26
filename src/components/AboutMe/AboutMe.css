@@ -1,0 +1,132 @@
+.me {
+    padding: 100px 70px;
+}
+
+.me__title {
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 27px;
+    margin: 0;
+    padding-bottom: 23px;
+    border-bottom: 1px solid #000000;
+}
+
+.me__cont {
+    max-width: 1280px;
+    margin: 66px 0 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.me__info {
+    display: flex;
+    flex-direction: column;
+}
+
+.me__subtitle {
+    font-weight: 400;
+    font-size: 50px;
+    line-height: 58px;
+    margin: 0;
+}
+
+.me__descr {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 20px;
+    margin: 18px 0 0 0;
+}
+
+.me__text {
+    max-width: 600px;
+    margin: 26px 0 0 0;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    padding-right: 20px;
+}
+
+.me__photo {
+    height: 327px;
+    width: 270px;
+    border-radius: 10px;
+}
+
+.me__link {
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #000000;
+    margin-top: auto;
+}
+
+@media screen and (max-width: 912px) {
+    .me {
+        padding: 90px 50px;
+    }
+
+    .me__subtitle {
+        font-size: 40px;
+        line-height: 40px;
+    }
+
+    .me__descr {
+        font-size: 12px;
+        line-height: 18px;
+        margin: 16px 0 0 0;
+    }
+
+    .me__text {
+        margin: 20px 0 0 0;
+        font-size: 12px;
+        line-height: 18px;
+        max-width: 364px;
+    }
+
+    .me__photo {
+        height: 307px;
+        width: 255px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .me {
+        padding: 70px 14px;
+    }
+
+    .me__title {
+        font-size: 18px;
+        line-height: 22px;
+        padding-bottom: 28px;
+    }
+
+    .me__cont {
+        margin: 60px 0 0;
+        flex-direction: column-reverse;
+    }
+
+    .me__info {
+        margin-top: 40px;
+    }
+
+    .me__subtitle {
+        font-size: 30px;
+        line-height: 36px;
+    }
+
+    .me__descr {
+        font-size: 11px;
+        line-height: 16px;
+        margin-top: 20px;
+    }
+
+    .me__text {
+        font-size: 11px;
+        line-height: 16px;
+    }
+
+    .me__link {
+        margin-top: 40px;
+    }
+}

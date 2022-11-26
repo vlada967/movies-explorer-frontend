@@ -1,0 +1,150 @@
+.header {
+    background-color: #073042;
+    min-height: 74px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 70px;
+}
+
+.header__menu {
+    display: none;
+}
+
+.header-signup {
+    min-height: 74px;
+    display: flex;
+    align-items: center;
+    max-width: 358px;
+    margin: 52px auto 0;
+}
+
+.header-movies {
+    min-height: 74px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 70px;
+}
+
+.header__logo {
+    align-self: center;
+    max-width: 38px;
+}
+
+.header__logo-signup {
+    align-self: center;
+    max-width: 38px;
+}
+
+.header__cont, .header__cont-movies {
+    display: flex;
+}
+
+.header__button {
+    background-color: #2BE080;
+    cursor: pointer;
+    border: none;
+    color: #000000;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    border-radius: 3px;
+    height: 32px;
+    align-self: center;
+}
+
+.header__button-grey {
+    background-color: #F9F9F9;
+    border-radius: 20px;
+    cursor: pointer;
+    border: none;
+    color: #000000;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    height: 32px;
+    width: 100px;
+    align-self: center;
+}
+
+.header__button-grey:hover {
+    background-color: #ebebeb;
+}
+
+.header__link {
+    color: #FFFFFF;
+    align-self: center;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    text-decoration: none;
+    margin-right: 30px;
+}
+
+.header__link:hover {
+    opacity: 60%;
+}
+
+.header__nav {
+    color: #000000;
+    align-self: center;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18px;
+    text-decoration: none;
+}
+
+.header__nav:first-child {
+    margin-right: 16px;
+}
+
+.header__nav:hover {
+    opacity: 60%;
+}
+
+@media screen and (max-width: 912px) {
+    .header {
+        padding: 0 30px;
+    }
+
+    .header-movies {
+        padding: 0 30px;
+    }
+
+    .header__cont-movies {
+        display: none;
+    }
+
+    .header__button-grey {
+        display: none;
+    }
+
+    .header__menu {
+        display: block;
+        background-image: url(../../images/menu.svg);
+        background-color: #FFFFFF;
+        height: 44px;
+        width: 44px;
+        border: none;
+        margin-top: 15px;
+    }
+
+}
+
+@media screen and (max-width: 442px) {
+    .header, .header-movies {
+        padding: 0 14px;
+    }
+
+    .header__logo-signup {
+        align-self: center;
+        margin: 0 auto;
+    }
+
+    .header__link-signup {
+        display: none;
+    }
+
+    .header__cont {
+        display: flex;
+    }
+}

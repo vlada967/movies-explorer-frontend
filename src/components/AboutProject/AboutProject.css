@@ -1,0 +1,146 @@
+.about {
+    display: flex;
+    flex-direction: column;
+    padding: 0 70px 101px;
+}
+
+.about__title {
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 27px;
+    margin-top: 110px;
+    padding-bottom: 23px;
+    border-bottom: 1px solid #000000;
+}
+
+.about__info {
+    display: flex;
+    margin-top: 70px;
+}
+
+.about__cont {
+    display: flex;
+    flex-direction: column;
+}
+
+.about__subtitle {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    max-width: 550px;
+    margin: 0;
+}
+
+.about__text {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    max-width: 550px;
+    margin: 26px 0 0 0;
+}
+
+.about__line {
+    display: flex;
+    margin-top: 110px;
+}
+
+.about__line-text {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    margin: 0;
+    padding: 9px 0;
+}
+
+.about__green {
+    background-color: #2BE080;
+}
+
+.about__gray {
+    background-color: #F2F2F2;
+}
+
+.about__short {
+    width: 20%;
+}
+
+.about__wide {
+    width: 80%;
+}
+
+.about__light-gray {
+    color: #A0A0A0;
+}
+
+.about__underline {
+    display: flex;
+    margin-top: 5px;
+}
+
+@media screen and (max-width: 912px) {
+    .about {
+        padding: 0 50px 90px;
+    }
+
+    .about__text {
+        font-size: 12px;
+        line-height: 18px;
+    }
+
+    .about__title {
+        margin: 90px 0 0;
+    }
+}
+
+@media screen and (max-width: 412px) {
+    .about {
+        padding: 0 18px 60px;
+    }
+
+    .about__title {
+        margin-top: 70px;
+    }
+
+    .about__info {
+        margin-top: 60px;
+        flex-direction: column;
+    }
+
+    .about__cont:nth-child(2) {
+        margin-top: 56px;
+    }
+
+    .about__subtitle {
+        font-size: 18px;
+        line-height: 22px;
+    }
+
+    .about__text {
+        font-size: 11px;
+        line-height: 16px;
+        margin-top: 16px;
+    }
+
+    .about__line {
+        margin-top: 60px;
+    }
+
+    .about__short {
+        width: 35%;
+    }
+    
+    .about__wide {
+        width: 65%;
+    }
+
+    .about__line-text {
+        font-size: 11px;
+        line-height: 13px;
+        padding: 10px 0;
+    }
+
+    .about__underline {
+        margin-top: 0;
+    }
+}

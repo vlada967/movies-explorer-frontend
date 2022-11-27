@@ -51,6 +51,23 @@
     border-radius: 50px;
 }
 
+.card__delete {
+    cursor: pointer;
+    background-image: url(../../images/cross.svg);
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    width: 16px;
+    height: 16px;
+    align-self: flex-end;
+    margin: 10px 10px 0 0;
+}
+
+.card__delete:hover {
+    opacity: 0.6;
+}
+
 input:checked + .card__radio {
     background-color: #2BE080;
 }

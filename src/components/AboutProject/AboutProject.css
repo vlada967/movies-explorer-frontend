@@ -21,6 +21,7 @@
 .about__cont {
     display: flex;
     flex-direction: column;
+    margin-right: 25px;
 }
 
 .about__subtitle {

@@ -88,6 +88,10 @@
 }
 
 @media screen and (max-width: 512px) {
+    .nav {
+        background-color: #ffffff;
+    }
+
     .nav__cont {
         width: 100vw;
     }

@@ -90,6 +90,10 @@ input:checked + .card__radio {
 @media screen and (max-width: 350px) {
     .card {
         height: 235px;
-        width: 300px;
+        max-width: 95vw;
+    }
+
+    .cards__more {
+        max-width: 95vw;
     }
 }

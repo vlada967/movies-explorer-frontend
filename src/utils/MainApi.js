@@ -1,4 +1,4 @@
-export const BASE_URL = '//localhost:3001';
+export const BASE_URL = '//api.movies.nomoredomains.icu';
 const token = () => localStorage.getItem('token');
 
 function _checkResponse(res) {

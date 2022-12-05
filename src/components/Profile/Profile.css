@@ -44,6 +44,9 @@
     font-size: 11px;
     line-height: 13px;
     margin: 0;
+    text-align: end;
+    align-self: start;
+    border: none;
 }
 
 .profile__email {
@@ -51,10 +54,15 @@
     font-size: 11px;
     line-height: 13px;
     margin: 0;
+    text-align: end;
+    align-self: start;
+    border: none;
 }
 
 .profile__cont {
     margin-top: 200px;
+    display: flex;
+    flex-direction: column;
 }
 
 .profile__change {
@@ -62,6 +70,13 @@
     font-size: 13px;
     line-height: 16px;
     text-align: center;
+    color: rgba(102, 102, 102, 0.8);
+    background-color: #ffffff;
+    border: none;
+}
+
+.profile__active {
+    color: black;
 }
 
 .profile__link {
@@ -71,10 +86,20 @@
     text-align: center;
     color: #FF3055;
     text-decoration: none;
+    margin-top: 15px;
 }
 
 .profile__link:hover {
     opacity: 0.6;
+}
+
+.profile__error {
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    text-align: end;
+    color: #FF3055;
+    margin: 10px 0 10px;
 }
 
 @media screen and (max-width: 442px) {

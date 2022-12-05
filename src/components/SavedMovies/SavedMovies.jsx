@@ -1,11 +1,16 @@
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 
-function SavedMovies() {
+function SavedMovies({ movies, onDelete, handleCheckboxChange, onChange, onSubmit }) {
     return (
         <main>
-            < SearchForm />
-            < MoviesCardList />
+            < SearchForm
+                onCheckboxChange={handleCheckboxChange}
+                onChange={onChange}
+                onSubmit={onSubmit} />
+            < MoviesCardList
+                movies={movies}
+                onDelete={onDelete} />
         </main>
     );
 }

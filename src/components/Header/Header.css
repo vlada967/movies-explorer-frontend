@@ -39,6 +39,11 @@
     display: flex;
 }
 
+.header__cont-movies-main {
+    display: flex;
+    margin-right: 20px;
+}
+
 .header__button {
     background-color: #2BE080;
     cursor: pointer;
@@ -91,6 +96,16 @@
     font-weight: 500;
     line-height: 18px;
     text-decoration: none;
+}
+
+.header__nav-main {
+    color: #FFFFFF;
+    align-self: center;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18px;
+    text-decoration: none;
+    margin-right: 15px;
 }
 
 .header__nav:first-child {

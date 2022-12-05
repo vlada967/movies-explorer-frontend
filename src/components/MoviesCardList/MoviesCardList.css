@@ -1,6 +1,7 @@
 .list {
     display: flex;
     flex-direction: column;
+    min-height: 50vh;
 }
 
 .cards {
@@ -25,8 +26,19 @@
     background-color: #ffffff;
 }
 
+.cards__none {
+    display: none;
+}
+
 .cards__more:hover {
     background-color: #E8E8E8;
+}
+
+.list__not-found {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    text-align: center;
 }
 
 @media screen and (max-width: 1112px) {

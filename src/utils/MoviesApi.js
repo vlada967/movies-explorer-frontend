@@ -7,13 +7,7 @@ function _checkResponse(res) {
     return Promise.reject(`Ошибка: ${res.status}`);
 }
 
-export const getContent = (token) => {
-    return fetch(`${BASE_URL}`, {
-        method: 'GET',
-        headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${token}`
-        },
-    })
+export const getContent = () => {
+    return fetch(`${BASE_URL}`)
         .then((response) => _checkResponse(response))
 };

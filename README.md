@@ -5,3 +5,5 @@
 Макет: https://drive.google.com/drive/folders/1Ryz_c8T26YCEOdmdbjHJs5tjRGcU3YYM?usp=sharing
 
 Ссылка на пул реквест: https://github.com/vlada967/movies-explorer-frontend/pull/2
+
+Ссылка на фронтенд-часть приложения: https://movies.frontend.nomoredomains.club/

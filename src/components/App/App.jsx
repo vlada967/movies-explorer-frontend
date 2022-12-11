@@ -16,35 +16,53 @@ import * as mainApi from '../../utils/MainApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function App() {
-  const [isRegistrated, setIsRegistrated] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
-  const [userEmail, setUserEmail] = React.useState('');
   const [currentUser, setCurrentUser] = React.useState({});
   const [errMessage, setErrMessage] = React.useState('');
-  const [movies, setMovies] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [message, setMessage] = React.useState('');
   const [isRequest, setIsRequest] = React.useState(false);
-  const [search, setSearch] = React.useState('');
-  const [checkedShort, setCheckedShort] = React.useState(false);
   const [error, setError] = React.useState(false);
-  const [allMovies, setAllMovies] = React.useState(movies);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [search, setSearch] = React.useState(localStorage.getItem('search'));
+  const [searchSaved, setSearchSaved] = React.useState('');
+  const initialCheckbox = localStorage.getItem('check') === 'true' ? true : false;
+  const [beatfilmMovies, setBeatfilmMovies] = React.useState([]);
+  const [movies, setMovies] = React.useState([]);
+  const [checked, setChecked] = React.useState(initialCheckbox);
+  const [checkedSaved, setCheckedSaved] = React.useState(false);
+  // console.log('CHECKED', checked)
+  const [moviesExist, setMoviesExist] = React.useState(false);
+  // const [allMovies, setAllMovies] = React.useState(movies);
+  const [allMovies, setAllMovies] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
-
+  const [toShowMovies, setToShowMovies] = React.useState(savedMovies);
   const history = useHistory();
   const location = useLocation();
 
   useEffect(() => {
     tokenCheck();
+    setSearchSaved('');
+    if (!moviesExist && search) {
+      // console.log('RE-RENDERED PAGE')
+
+      getMovies();
+      setMoviesExist(true);
+      // if (checked) {
+      //   console.log('GHGHGHGHGH CHECKED')
+      //   setMovies(filterShortMovies(movies));
+      // }
+    }
   }, []);
 
   useEffect(() => {
     if (loggedIn) {
+      setError(false);
       setIsLoading(true);
       Promise.all([mainApi.getProfileInfo(), mainApi.getMovies()])
         .then(([user, movies]) => {
-          setCurrentUser(user);
+          setCurrentUser(user.data);
           setSavedMovies(movies.data);
-
+          setToShowMovies(movies.data);
           localStorage.setItem('savedMovies', JSON.stringify(movies.data));
           setError(false);
         })
@@ -52,27 +70,30 @@ function App() {
           setError(true);
           console.log(err);
         })
-        .finally(() => setIsLoading(false))
+        .finally(() => {
+          setIsLoading(false);
+          setIsRequest(true);
+        })
     }
   }, [loggedIn])
 
   useEffect(() => {
-    if (checkedShort && (location.pathname === '/movies')) {
+    if (checked && (location.pathname === '/movies')) {
       setMovies(filterShortMovies(movies));
-    } else if (!checkedShort && (location.pathname === '/movies')) {
+    } else if (!checked && (location.pathname === '/movies')) {
       setMovies(filterShortMoviesBack(movies));
-    } else if (checkedShort && (location.pathname === '/saved-movies')) {
-      setSavedMovies(filterShortMovies(savedMovies));
-    } else if (!checkedShort && (location.pathname === '/saved-movies')) {
-      setSavedMovies(filterShortMoviesBack(savedMovies));
     }
-  }, [checkedShort, isRequest]);
+    if (checkedSaved && (location.pathname === '/saved-movies')) {
+      setToShowMovies(filterShortMovies(savedMovies));
+    } else if (!checkedSaved && (location.pathname === '/saved-movies')) {
+      setToShowMovies(filterShortMoviesBack(savedMovies));
+    }
+  }, [checked, checkedSaved, isRequest]);
 
   function onRegister(name, email, password) {
     return mainApi.register(name, email, password)
       .then((res) => {
         if (res) {
-          setIsRegistrated(true);
           onLogin(email, password);
           history.push('/movies');
         }
@@ -83,7 +104,6 @@ function App() {
         } else {
           setErrMessage('Ошибка на сервере');
         }
-        setIsRegistrated(false);
       })
   }
 
@@ -108,74 +128,148 @@ function App() {
   function tokenCheck() {
     const jwt = localStorage.getItem('token');
     if (jwt) {
-      setLoggedIn(true);
-      history.push(location.pathname);
+      mainApi.checkToken(jwt)
+        .then(() => {
+          setLoggedIn(true);
+          history.push(location.pathname);
+        })
+        .catch((err) => {
+          console.log(err);
+          signOut();
+        });
     }
   }
 
   function getMovies() {
-    setError(false);
-    setIsLoading(true);
-    const jwt = localStorage.getItem('token');
-    return moviesApi.getContent(jwt)
-      .then((movies) => {
-        setMovies(movies);
-        setMovies(filterMovies(movies, search));
-      })
-      .catch(err => {
-        setError(true);
-        console.log(err)
-      })
-      .finally(() => {
-        setIsLoading(false);
-        setIsRequest(true);
-      })
+    // console.log('FUNCTION GET MOVIES')
+    if (beatfilmMovies.length === 0) {
+      // console.log('beatfilmMovies.length === 0')
+      setError(false);
+      setIsLoading(true);
+      const jwt = localStorage.getItem('token');
+      return moviesApi.getContent(jwt)
+        .then((movies) => {
+          setBeatfilmMovies(movies);
+          if (checked) {
+            // console.log('need to filter!', movies)
+            setMovies(filterShortMovies(filterMovies(movies, search)));
+          } else {
+            setMovies(filterMovies(movies, search));
+          }
+
+        })
+        .catch(err => {
+          setError(true);
+          console.log(err)
+        })
+        .finally(() => {
+          setIsLoading(false);
+          setIsRequest(true);
+        })
+    } else {
+      // console.log(search)
+      // console.log('beatfilm', beatfilmMovies);
+      setMovies(filterMovies(beatfilmMovies, search));
+      // console.log('SEARCHED AND FILTERED', filterMovies(beatfilmMovies, search))
+    }
+    // console.log('CHECKED in functon get movies', checked)
+    if (checked) {
+      // console.log('need to filter!', movies)
+      setMovies(filterShortMovies(filterMovies(beatfilmMovies, search)));
+    } // else if (!checked) {
+    //   console.log('NO need to filter!')
+    //   setMovies(filterShortMoviesBack(movies));
+    // }
   }
 
-  function getSavedMovies() {
-    setError(false);
-    setIsLoading(true);
-    return mainApi.getMovies()
-      .then((movies) => {
-        setSavedMovies(movies.data);
-        setSavedMovies(filterMovies(movies.data, search));
-      })
-      .catch(err => {
-        setError(true);
-        console.log(err)
-      })
-      .finally(() => {
-        setIsLoading(false);
-        setIsRequest(true);
-      })
+  // useEffect(() => {
+  //   setMovies(filterMovies(beatfilmMovies, search));
+
+  // }, [movies, checked, search])
+
+  function handleSubmitSavedMovies() {
+    // setError(false);
+    // setIsLoading(true);
+    // return mainApi.getMovies()
+    //   .then((movies) => {
+    //     setSavedMovies(movies.data);
+    //     // setSavedMovies(filterMovies(movies.data, searchSaved));
+    //   })
+    //   .catch(err => {
+    //     setError(true);
+    //     console.log(err)
+    //   })
+    //   .finally(() => {
+    //     setIsLoading(false);
+    //     setIsRequest(true);
+    //   })
+    // console.log(searchSaved);
+    // console.log('savedMovies', savedMovies)
+    // console.log('toShowMovies', toShowMovies)
+    setToShowMovies(filterMovies(savedMovies, searchSaved));
   }
 
-  const filterMovies = (movies, search) => {
-    const filteredMovies = movies.filter((item) => (item.nameEN.toLowerCase().indexOf(search.toLowerCase()) !== -1
-      || item.nameRU.toLowerCase().indexOf(search.toLowerCase()) !== -1));
+  const filterMovies = (array, input) => {
+    // console.log('going to filter!', array, input)
+    // const filteredMovies = movies.filter((item) => (item.nameEN.toLowerCase().indexOf(search.toLowerCase()) !== -1
+    //   || item.nameRU.toLowerCase().indexOf(search.toLowerCase()) !== -1));
+    // return filteredMovies;
+    // console.log('filtering!', array, input)
+    const filteredMovies = array.filter((item) => (item.nameEN.toLowerCase().indexOf(input.toLowerCase()) !== -1
+      || item.nameRU.toLowerCase().indexOf(input.toLowerCase()) !== -1));
+    // console.log('JUST FILTERED!', filteredMovies)
     return filteredMovies;
   }
 
-  const filterShortMovies = (movies) => {
-    setAllMovies(movies);
-    const filteredMovies = movies.filter((item) => (item.duration < 40));
+  const filterShortMovies = (array) => {
+    // console.log('CHECKBOX before', array)
+    setAllMovies(array);
+    const filteredMovies = array.filter((item) => (item.duration < 40));
+    // console.log('CHECKBOX filtered movies', filteredMovies)
     return filteredMovies;
   }
 
   const filterShortMoviesBack = () => {
-    if (allMovies.length === 0) {
-      return movies;
+    // console.log('ALL MOVIES', allMovies);
+    if (location.pathname === '/saved-movies') {
+      if (searchSaved) {
+        console.log('SEARCH SAVED', searchSaved);
+        // setToShowMovies(filterMovies(savedMovies));
+        return (filterMovies(savedMovies, searchSaved));
+      } else {
+        return (savedMovies);
+      }
     }
-    return allMovies;
+    // else if (allMovies.length === 0) {
+    //   console.log('allMovies.length === 0', movies);
+    //   return movies;
+    // } else {
+    //   return allMovies;
+    // }
+    else if (!search) {
+      console.log('there is NO search');
+      return beatfilmMovies;
+    } else {
+      console.log('there is search', search);
+      return filterMovies(beatfilmMovies, search);
+    }
   }
 
   function handleSearchInputChange(input) {
     setSearch(input);
+    localStorage.setItem('search', input);
+  }
+  function handleSearchSavedInputChange(input) {
+    setSearchSaved(input);
   }
 
   function handleCheckboxChange() {
-    setCheckedShort(!checkedShort);
-    localStorage.setItem('check', checkedShort);
+    setChecked(!checked);
+    localStorage.setItem('check', !checked);
+  }
+
+  function handleCheckboxSavedChange() {
+    setCheckedSaved(!checkedSaved);
   }
 
   function handleSaveMovie(movie) {
@@ -184,7 +278,7 @@ function App() {
       .then((newMovie) => {
         newMovie.data.isSaved = true;
         setSavedMovies([newMovie.data, ...savedMovies]);
-        localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
+        setToShowMovies([newMovie.data, ...savedMovies]);
       })
       .catch((err) => {
         console.log(err);
@@ -200,6 +294,7 @@ function App() {
     mainApi.deleteMovie(movie._id)
       .then(() => {
         setSavedMovies(savedMovies.filter(item => item.nameEN !== movie.nameEN));
+        setToShowMovies(savedMovies.filter(item => item.nameEN !== movie.nameEN));
       })
       .catch((err) => {
         console.log(err);
@@ -209,7 +304,9 @@ function App() {
   function updateUser(name, email) {
     mainApi.updateUser(name, email)
       .then((user) => {
-        setCurrentUser(user);
+        setCurrentUser(user.data);
+        // console.log(user);
+        setMessage('Данные успешно изменены');
       })
       .catch((err) => {
         console.log(err);
@@ -220,7 +317,12 @@ function App() {
     localStorage.clear();
     setCurrentUser({});
     setLoggedIn(false);
-    history.push('/');
+    setErrMessage('');
+    setSavedMovies([]);
+    setMovies([]);
+    setAllMovies([]);
+    setSearch('');
+    setChecked(false);
   }
 
   return (
@@ -234,6 +336,7 @@ function App() {
           getMovies={getMovies}
           onChange={handleSearchInputChange}
           movies={movies}
+          savedMovies={savedMovies}
           isLoading={isLoading}
           isRequest={isRequest}
           handleSaveMovie={handleSaveMovie}
@@ -241,18 +344,20 @@ function App() {
           handleCheckboxChange={handleCheckboxChange}
           error={error}
           component={Movies}
-          checkedShort={checkedShort}
+          checkedShort={checked}
           onDelete={handleDeleteMovie}
         />
 
         <ProtectedRoute
           path='/saved-movies'
           loggedIn={loggedIn}
-          movies={savedMovies}
+          movies={toShowMovies}
           onDelete={handleDeleteMovie}
-          handleCheckboxChange={handleCheckboxChange}
-          onChange={handleSearchInputChange}
-          onSubmit={getSavedMovies}
+          handleCheckboxChange={handleCheckboxSavedChange}
+          onChange={handleSearchSavedInputChange}
+          onSubmit={handleSubmitSavedMovies}
+          isLoading={isLoading}
+          searchSaved={searchSaved}
           component={SavedMovies}
         />
 
@@ -261,6 +366,8 @@ function App() {
           loggedIn={loggedIn}
           onSignOut={signOut}
           onUpdate={updateUser}
+          message={message}
+          setMessage={setMessage}
           component={Profile}
         />
 
@@ -269,25 +376,18 @@ function App() {
         </Route>
 
         <Route path="/signup">
-          <Register onRegister={onRegister} errMessage={errMessage} />
+          {loggedIn ? <Redirect to='/movies' /> :
+            <Register onRegister={onRegister} errMessage={errMessage} />}
         </Route>
 
         <Route path="/signin">
-          <Login onLogin={onLogin} errMessage={errMessage} />
+          {loggedIn ? <Redirect to='/movies' /> :
+            <Login onLogin={onLogin} errMessage={errMessage} />}
         </Route>
 
         <Route path="*">
           <NotFound />
         </Route>
-
-        <Route>
-          {loggedIn ? (
-            <Redirect to="/" />
-          ) : (
-              <Redirect to="/signin" />
-            )}
-        </Route>
-
       </Switch>
       <Footer />
     </CurrentUserContext.Provider >

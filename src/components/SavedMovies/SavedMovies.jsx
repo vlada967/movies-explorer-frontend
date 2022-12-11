@@ -1,16 +1,19 @@
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 
-function SavedMovies({ movies, onDelete, handleCheckboxChange, onChange, onSubmit }) {
+function SavedMovies({ movies, onDelete, handleCheckboxChange, onChange, onSubmit, isLoading, searchSaved }) {
+    // console.log('in SavedMovies component', movies)
     return (
         <main>
             < SearchForm
-                onCheckboxChange={handleCheckboxChange}
+                onCheckboxSavedChange={handleCheckboxChange}
                 onChange={onChange}
+                searchSaved={searchSaved}
                 onSubmit={onSubmit} />
             < MoviesCardList
-                movies={movies}
-                onDelete={onDelete} />
+                savedMovies={movies}
+                onDelete={onDelete}
+                isLoading={isLoading} />
         </main>
     );
 }

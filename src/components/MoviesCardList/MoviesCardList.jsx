@@ -3,11 +3,18 @@ import { useLocation } from 'react-router-dom';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import Preloader from '../Preloader/Preloader';
 
-function MoviesCardList({ movies, isLoading, isRequest, movie, checked, handleSaveMovie, error, onDelete }) {
+function MoviesCardList({ movies, isLoading, isRequest, handleSaveMovie, error, onDelete, savedMovies }) {
+    // console.log('in saved page', movies);
+    // console.log('in saved page savedMovies', savedMovies);
+
     const [moviesNumber, setMoviesNumber] = React.useState(checkNumber(window.innerWidth));
     const [addNumber, setAddNumber] = React.useState(checkNumber(window.innerWidth));
     const [movieList, setMovieList] = React.useState([]);
     const path = useLocation();
+
+    if (path.pathname === '/saved-movies') {
+        movies = savedMovies;
+    }
 
     useEffect(() => {
         setMoviesNumber(checkNumber(window.innerWidth));
@@ -42,6 +49,12 @@ function MoviesCardList({ movies, isLoading, isRequest, movie, checked, handleSa
         }
     }
 
+    function findSavedCards(id) {
+        return savedMovies.find((movie) => {
+            return movie.movieId === id;
+        })
+    }
+
     if (error) {
         return (
             <section className="list">
@@ -72,12 +85,14 @@ function MoviesCardList({ movies, isLoading, isRequest, movie, checked, handleSa
             {(path.pathname === '/movies') ?
                 (<div className="cards">
                     {movieList.map((movie) => {
+                        const saved = findSavedCards(movie.id);
                         return (
                             < MoviesCard
                                 card={movie}
                                 key={movie.id}
                                 handleSaveMovie={handleSaveMovie}
                                 onDelete={onDelete}
+                                saved={saved}
                             />)
                     })}
                 </div>)

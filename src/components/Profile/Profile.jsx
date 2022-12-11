@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-function Profile({ onSignOut, onUpdate }) {
+function Profile({ onSignOut, onUpdate, message, setMessage }) {
     const currentUser = React.useContext(CurrentUserContext);
-    const [name, setName] = React.useState(currentUser.data.name);
-    const [email, setEmail] = React.useState(currentUser.data.email);
+    const [name, setName] = React.useState('');
+    const [email, setEmail] = React.useState('');
     const [nameWrong, setNameWrong] = React.useState(false);
     const [emailWrong, setEmailWrong] = React.useState(false);
     const [nameError, setNameError] = React.useState('');
@@ -13,11 +13,23 @@ function Profile({ onSignOut, onUpdate }) {
     const [isActive, setIsActive] = React.useState(false);
 
     useEffect(() => {
+        if (currentUser) {
+            setName(currentUser.name);
+            setEmail(currentUser.email);
+        }
+    }, [setName, setEmail, currentUser]);
+
+    useEffect(() => {
         setIsActive(false);
-        if ((!nameWrong && !emailWrong) && (currentUser.data.name !== name && currentUser.data.email !== email)) {
+        console.log()
+        if ((!nameWrong && !emailWrong) && (currentUser.name !== name || currentUser.email !== email)) {
             setIsActive(true);
         }
-    }, [nameWrong, emailWrong, name, email]);
+    }, [nameWrong, emailWrong, name, email, currentUser]);
+
+    useEffect(() => {
+        setTimeout(() => setMessage(''), 5000)
+    }, [message])
 
     function handleNameChange(e) {
         setName(e.target.value);
@@ -64,7 +76,7 @@ function Profile({ onSignOut, onUpdate }) {
 
     return (
         <section className="profile">
-            <h2 className="profile__title">{`Привет, ${currentUser.data.name}!`}</h2>
+            <h2 className="profile__title">{`Привет, ${currentUser.name}!`}</h2>
 
             <form className='profile__info' onSubmit={handleSubmit}>
                 <div className="profile__info-cont">
@@ -95,8 +107,10 @@ function Profile({ onSignOut, onUpdate }) {
                 {(emailWrong && emailError) && <div className="profile__error">{emailError}</div>}
 
                 <div className="profile__cont">
+                    {message && <p className="profile__message">{message}</p>}
                     <button type="submit" className={isActive ? "profile__change profile__active" : "profile__change"} disabled={isActive ? false : true}>Редактировать</button>
-                    <Link to="signup" className="profile__link" onClick={onSignOut}>Выйти из аккаунта</Link>
+                    <Link to="/" className="profile__link" onClick={onSignOut}>Выйти из аккаунта</Link>
+                    {/* <button type='button' className='profile__link' onClick={onSignOut}>Выйти из аккаунта</button> */}
                 </div>
             </form>
         </section>

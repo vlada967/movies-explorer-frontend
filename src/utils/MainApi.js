@@ -1,4 +1,6 @@
-export const BASE_URL = '//api.movies.backend.nomoredomains.club';
+// export const BASE_URL = '//api.movies.backend.nomoredomains.club';
+export const BASE_URL = '//localhost:3001';
+
 const token = () => localStorage.getItem('token');
 
 function _checkResponse(res) {
@@ -6,6 +8,17 @@ function _checkResponse(res) {
         return res.json();
     }
     return Promise.reject(`Ошибка: ${res.status}`);
+}
+
+export const checkToken = (token) => {
+    return fetch(`${BASE_URL}/users/me`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    })
+        .then((response) => _checkResponse(response))
 }
 
 export const register = (name, email, password) => {

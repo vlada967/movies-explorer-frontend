@@ -1,16 +1,16 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-function MoviesCard({ card, handleSaveMovie, onDelete }) {
-
+function MoviesCard({ card, handleSaveMovie, onDelete, saved }) {
     const path = useLocation();
     const serverUrl = 'https://api.nomoreparties.co/';
 
-    function handleCheckboxChange() {
-        if (card.isSaved) {
-            onDelete(card);
-        } else {
+    function handleCheckboxChange(e) {
+        if (e.target.checked) {
             handleSaveMovie(card);
+        }
+        else {
+            onDelete(card);
         }
     }
 
@@ -37,7 +37,7 @@ function MoviesCard({ card, handleSaveMovie, onDelete }) {
                     <button type="button" className="card__delete" onClick={handleCardDelete}></button>
                 ) : (
                         <label className="card__cont">
-                            <input type="checkbox" onChange={handleCheckboxChange} checked={card.isSaved ? true : false} />
+                            <input type="checkbox" onChange={handleCheckboxChange} checked={saved ? true : false} />
                             <span className="card__radio" />
                         </label>
                     )}

@@ -1,5 +1,5 @@
-// export const BASE_URL = '//api.movies.backend.nomoredomains.club';
-export const BASE_URL = '//localhost:3001';
+export const BASE_URL = '//api.movies.backend.nomoredomains.club';
+// export const BASE_URL = '//localhost:3001';
 
 const token = () => localStorage.getItem('token');
 

@@ -53,17 +53,21 @@
 
 .register__button {
     color: #ffffff;
-    background: #3456F3;
+    background: #b9b9b9;
     font-weight: 500;
     font-size: 14px;
     line-height: 17px;
     min-height: 50px;
     cursor: pointer;
-    margin: 122px auto 16px;
+    margin: 10px auto 16px;
     padding: 0;
     width: 100%;
     border: none;
     border-radius: 3px;
+}
+
+.register__active {
+    background: #3456F3;
 }
 
 .register__button:hover {
@@ -71,7 +75,7 @@
 }
 
 .register__input {
-    margin: 0 0 30px 0;
+    margin: 0 0 6px 0;
     padding: 0;
     border: none;
     font-weight: 400;
@@ -82,11 +86,30 @@
     border-bottom: 1px solid #E8E8E8;
 }
 
+#password.register__input {
+    margin-bottom: 120px;
+}
+
+.register__error {
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    color: #FF3055;
+}
+
+.register__error-server {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #FF3055;
+}
+
 .register__label {
     font-weight: 400;
     font-size: 10px;
     line-height: 12px;
     color: #A0A0A0;
+    margin-top: 24px;
 }
 
 @media screen and (max-width: 412px) {

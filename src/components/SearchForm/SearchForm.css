@@ -125,6 +125,15 @@ input:checked + .search__slider:before {
     margin: 30px auto 0;
 }
 
+.search__error {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: rgba(255, 0, 0, 0.8);
+    text-align: center;
+    margin-top: 10px;
+}
+
 @media screen and (max-width: 912px) {
     .search {
         padding: 0 30px 30px;
